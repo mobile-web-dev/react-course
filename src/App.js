@@ -2,51 +2,37 @@ import React, { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [num1, setNum1] = useState(1);
-  const [num2, setNum2] = useState(1);
-  const [score, setScore] = useState(0);
-  const [response, setResponse] = useState("");
-  const [error, setError] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [input, setInput] = useState("");
 
-  const onKeypress = (e) => {
-    const answer = parseInt(response);
-    if (e.key == "Enter") {
-      if (answer === num1 + num2) {
-        setScore(score + 1);
-        setNum1(Math.ceil(Math.random() * 10));
-        setNum2(Math.ceil(Math.random() * 10));
-        setResponse("");
-        setError(false);
-      } else {
-        setError(true);
-      }
-    }
+  const addTask = () => {
+    setTasks([...tasks, input]);
+    setInput("");
   };
 
-  if (score >= 5) {
-    return (
-      <div className="container">
-        <h1 style={{ color: "white" }}>Yoohoo! You won!!</h1>
-      </div>
-    );
-  }
+  const deleteTask = (index) => {
+    tasks.splice(index, 1);
+    setTasks([...tasks]);
+  };
 
   return (
-    <div className="container">
-      <div className="child">
-        <h1>
-          {num1} + {num2}
-        </h1>
-        <input
-          type="text"
-          value={response}
-          placeholder="answer"
-          onChange={(e) => setResponse(e.target.value)}
-          onKeyDown={onKeypress}
-        />
-        {error ? <p style={{ color: "red" }}>opps you are wrong</p> : ""}
-        <h5>Score: {score}</h5>
-      </div>
+    <div>
+      <ul>
+        {tasks.map((task, index) => (
+          <li>
+            {task}
+            <button onClick={() => deleteTask(index)}>X</button>
+          </li>
+        ))}
+      </ul>
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+      <button onClick={addTask}>Add task</button>
+      <button onClick={() => setTasks([])}>Reset All</button>
+      <p>No of tasks to be done : {tasks.length}</p>
     </div>
   );
 }
