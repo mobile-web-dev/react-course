@@ -1,35 +1,31 @@
-import React, { useState, createContext } from "react";
+import React, { useState } from "react";
 import "./App.css";
 
-const info = {
-  name: "John",
-  age: 20,
-  gender: "male"
-};
-
-const ThemeContext = createContext(info);
-
-const Person = () => {
-  const info = React.useContext(ThemeContext);
-  console.log(info);
+const Counter = ({ counter, increment, decrement }) => {
   return (
     <div>
-      <p>
-        {info.name}, {info.age}, {info.gender}
-      </p>
+      <div>Counter :{counter}</div>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
     </div>
   );
 };
 
-const Family = () => {
-  return <Person />;
-};
-
 const App = () => {
+  const [counter, setCounter] = useState(0);
+  const increment = () => {
+    setCounter(counter + 1);
+  };
+
+  const decrement = () => {
+    setCounter(counter - 1);
+  };
   return (
-    <ThemeContext.Provider value={info}>
-      <Family />
-    </ThemeContext.Provider>
+    <>
+      <Counter counter={counter} increment={increment} decrement={decrement} />
+      <Counter counter={counter} increment={increment} decrement={decrement} />
+      <Counter counter={counter} increment={increment} decrement={decrement} />
+    </>
   );
 };
 
