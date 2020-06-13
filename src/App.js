@@ -1,40 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, createContext } from "react";
 import "./App.css";
 
-function App() {
-  const [tasks, setTasks] = useState([]);
-  const [input, setInput] = useState("");
+const info = {
+  name: "John",
+  age: 20,
+  gender: "male"
+};
 
-  const addTask = () => {
-    setTasks([...tasks, input]);
-    setInput("");
-  };
+const ThemeContext = createContext(info);
 
-  const deleteTask = (index) => {
-    tasks.splice(index, 1);
-    setTasks([...tasks]);
-  };
-
+const Person = () => {
+  const info = React.useContext(ThemeContext);
+  console.log(info);
   return (
     <div>
-      <ul>
-        {tasks.map((task, index) => (
-          <li>
-            {task}
-            <button onClick={() => deleteTask(index)}>X</button>
-          </li>
-        ))}
-      </ul>
-      <input
-        type="text"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      <button onClick={addTask}>Add task</button>
-      <button onClick={() => setTasks([])}>Reset All</button>
-      <p>No of tasks to be done : {tasks.length}</p>
+      <p>
+        {info.name}, {info.age}, {info.gender}
+      </p>
     </div>
   );
-}
+};
+
+const Family = () => {
+  return <Person />;
+};
+
+const App = () => {
+  return (
+    <ThemeContext.Provider value={info}>
+      <Family />
+    </ThemeContext.Provider>
+  );
+};
 
 export default App;
